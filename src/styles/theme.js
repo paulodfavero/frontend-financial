@@ -18,16 +18,17 @@ export const theme = createMuiTheme({
     fontSizeExtraSmall: 12,
     color: "#D8D8D8",
     h1: {
-      fontSize: 24,
-      fontWeight: 700,
-      lineHeight: "56px"
+      fontSize: 28,
+      fontWeight: 500
     },
     h2: {
-      fontSize: 20,
-      fontWeight: 700,
-      lineHeight: "56px"
+      fontSize: 24,
+      fontWeight: 700
     },
-    body1: {}
+    h3: {
+      fontSize: 22,
+      fontWeight: 700
+    }
   },
   palette: {
     primary: {
@@ -43,6 +44,28 @@ export const theme = createMuiTheme({
       main: "#EF4E22",
       dark: error[700],
       contrastText: "#ffffff"
+    }
+  },
+  overrides: {
+    MuiPaper: {
+      rounded: {
+        borderRadius: 8
+      }
+    },
+    MuiCard: {
+      root: {
+        margin: view.spacing(2, 0)
+      }
+    },
+    MuiCardContent: {
+      root: {
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-between",
+        "&:last-child": {
+          paddingBottom: view.spacing(2)
+        }
+      }
     }
   }
 });
