@@ -6,6 +6,9 @@ import error from "@material-ui/core/colors/red";
 const primaryColor = "#0061cd";
 const secondaryColor = "#0081f4";
 
+const primaryColorExpenses = "#d43030";
+const secondaryColorExpenses = "#f34949";
+
 const view = createMuiTheme();
 export const theme = createMuiTheme({
   typography: {
@@ -39,6 +42,22 @@ export const theme = createMuiTheme({
       main: `${secondaryColor}`,
       contrastText: "#ffffff"
     },
+    primaryGains: {
+      main: `${primaryColor}`,
+      contrastText: "#ffffff"
+    },
+    secondarygains: {
+      main: `${secondaryColor}`,
+      contrastText: "#ffffff"
+    },
+    primaryExpenses: {
+      main: `${primaryColorExpenses}`,
+      contrastText: "#ffffff"
+    },
+    secondaryExpenses: {
+      main: `${secondaryColorExpenses}`,
+      contrastText: "#ffffff"
+    },
     error: {
       light: error[300],
       main: "#EF4E22",
@@ -47,6 +66,11 @@ export const theme = createMuiTheme({
     }
   },
   overrides: {
+    MuiSkeleton: {
+      root: {
+        backgroundColor: "rgba(171, 171, 171, 0.4)"
+      }
+    },
     MuiPaper: {
       rounded: {
         borderRadius: 8
@@ -55,6 +79,11 @@ export const theme = createMuiTheme({
     MuiCard: {
       root: {
         margin: view.spacing(2, 0)
+      }
+    },
+    MuiButton: {
+      root: {
+        padding: "16px 16px"
       }
     },
     MuiCardContent: {
