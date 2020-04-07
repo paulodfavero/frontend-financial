@@ -66,19 +66,33 @@ export const theme = createMuiTheme({
     }
   },
   overrides: {
+    MuiFormControl: {
+      root: {
+        margin: view.spacing(1, 0)
+      }
+    },
+    MuiTextField: {
+      root: {
+        margin: view.spacing(1, 0)
+      }
+    },
     MuiSkeleton: {
       root: {
-        backgroundColor: "rgba(171, 171, 171, 0.4)"
+        backgroundColor: "rgba(171, 171, 171, 0.8)"
       }
     },
     MuiPaper: {
       rounded: {
-        borderRadius: 8
+        borderRadius: 0
+      },
+      elevation1: {
+        boxShadow: "none"
       }
     },
     MuiCard: {
       root: {
-        margin: view.spacing(2, 0)
+        margin: view.spacing(0),
+        borderBottom: "1px solid #ececec"
       }
     },
     MuiButton: {
@@ -93,6 +107,20 @@ export const theme = createMuiTheme({
         justifyContent: "space-between",
         "&:last-child": {
           paddingBottom: view.spacing(2)
+        }
+      }
+    },
+    MuiBox: {
+      root: {
+        padding: 0
+      }
+    },
+    MuiTabs: {
+      root: {
+        minHeight: 35,
+        "& button": {
+          minHeight: 35,
+          fontSize: 12
         }
       }
     }

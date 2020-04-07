@@ -1,22 +1,28 @@
 import React from "react";
-import { Divider, Card, CardContent } from "@material-ui/core";
+import { makeStyles, Card, CardContent } from "@material-ui/core";
 
 import Skeleton from "@material-ui/lab/Skeleton";
 
+const useStyles = makeStyles(theme => ({
+  content: {
+    padding: "22px 16px !important"
+  }
+}));
+
+const repeat = ["1", "1", "1", "1", "1", "1", "1", "1"];
+
 export default function SkeletonCard() {
+  const classes = useStyles();
+
   return (
     <>
-      <Card>
-        <CardContent>
-          <Skeleton variant="circle" width={40} height={40} />
-          <Skeleton variant="text" width="80%" height={8} />
-        </CardContent>
-
-        <Divider />
-        <CardContent>
-          <Skeleton variant="text" width="100%" height={8} />
-        </CardContent>
-      </Card>
+      {repeat.map(() => (
+        <Card>
+          <CardContent className={classes.content}>
+            <Skeleton variant="text" width="100%" height={8} />
+          </CardContent>
+        </Card>
+      ))}
     </>
   );
 }

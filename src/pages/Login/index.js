@@ -10,9 +10,6 @@ const useStyles = makeStyles(theme => ({
     flex: 1,
     justifyContent: "center",
     height: "100vh"
-  },
-  input: {
-    margin: theme.spacing(1, 0)
   }
 }));
 
@@ -23,13 +20,12 @@ export default function Login() {
     <>
       <form className={classes.contentForm}>
         <Typography variant="h3">Insira seu login e senha</Typography>
-        <TextField label="Login" variant="outlined" className={classes.input} />
+        <TextField label="Login" variant="outlined" />
         <TextField
           label="Senha"
           type="password"
           autoComplete="current-password"
           variant="outlined"
-          className={classes.input}
         />
         <Button variant="contained" color="secondary">
           Logar

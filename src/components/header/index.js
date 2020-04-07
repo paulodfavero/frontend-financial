@@ -10,7 +10,7 @@ const useStyles = makeStyles(theme => ({
     background: `linear-gradient(0deg, ${theme.palette.primary.main} 0%, ${theme.palette.secondary.main} 50%)`,
     textAlign: "center",
     color: "#ffffff",
-    height: "30vh",
+    height: "22vh",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",

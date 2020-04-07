@@ -1,15 +1,15 @@
-const OPEN_MENU = "OPEN_MENU";
+const LISTED_EXPENSES = "LISTED_EXPENSES";
 
 const initialState = {
-  isOpened: false
+  createdList: true
 };
 
 export const reducer = (state = initialState, action) => {
   switch (action.type) {
-    case OPEN_MENU:
+    case LISTED_EXPENSES:
       return {
         ...state,
-        isOpened: action.payload.isOpened
+        createdList: action.payload.createdList
       };
 
     default:
@@ -17,11 +17,11 @@ export const reducer = (state = initialState, action) => {
   }
 };
 
-export const handleOpenMenu = isOpened => {
+export const expensesListUpdated = createdList => {
   return {
-    type: OPEN_MENU,
+    type: LISTED_EXPENSES,
     payload: {
-      isOpened
+      createdList
     }
   };
 };

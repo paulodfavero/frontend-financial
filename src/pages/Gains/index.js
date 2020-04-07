@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from "react";
 import * as R from "ramda";
 import clsx from "clsx";
+import moment from "moment-timezone";
 import { useSelector } from "react-redux";
-import { makeStyles, Container, Grid } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core";
 
 import api from "../../services/api";
 import Header from "../../components/header";
-import CardComponent from "../../components/card";
-import SkeletonCard from "../../components/card/skeleton";
 import FastMenu from "../../components/menuFast";
 import SideComponent from "../../components/sideComponent";
+import Guide from "../../components/guide";
+import SkeletonCard from "../../components/card/skeleton";
 
 const useStyles = makeStyles(theme => ({
   wrap: {
@@ -25,119 +26,49 @@ const useStyles = makeStyles(theme => ({
     "&.active": {
       transform: "translateX(-100vw)"
     }
-  },
-  container: {
-    marginTop: -50
   }
 }));
 
 export default function Gains() {
   const classes = useStyles();
-  const [expense, setExpense] = useState("");
+  const [gains, setGains] = useState();
+  const [totalValue, setTotalValue] = useState("");
   const isOpened = useSelector(state => R.path(["menu", "isOpened"], state));
 
   useEffect(() => {
+    // let dataFom = moment(new Date("2020", "3", "25"))
+    //   .locale("pt-br")
+    //   .format("dddd, ll");
+    // // console.log(dataFom);
     async function fetchData() {
       const res = await api.get("gains");
-      setExpense(res.data);
+
+      if (res.data.total <= 1) {
+        setTotalValue(res.data.docs[0].value);
+      } else {
+        let valorTotal = 0;
+        res.data.docs.map(item => {
+          return (valorTotal += parseInt(item.value));
+        });
+        setTotalValue(valorTotal);
+      }
+      setGains(res.data.docs);
     }
+
     fetchData();
   }, []);
 
   return (
     <>
       <div className={clsx(classes.wrap, `${isOpened && "active"}`)}>
-        <Header origin="gain" title="Saldo atual em conta" value="509" />
-        <Container className={classes.container}>
-          <Grid container>
-            <Grid item xs={12}>
-              {expense &&
-                expense.map(item => (
-                  <>
-                    <CardComponent
-                      origin="gain"
-                      name={item.nome}
-                      value={item.valor}
-                      payer={item.sacado}
-                      installments={item.parcelas}
-                      limitDate={item.data}
-                      logo={item.logo}
-                    />
-                    <CardComponent
-                      origin="gain"
-                      name={item.nome}
-                      value={item.valor}
-                      payer={item.sacado}
-                      installments={item.parcelas}
-                      limitDate={item.data}
-                      logo={item.logo}
-                    />
-                    <CardComponent
-                      origin="gain"
-                      name={item.nome}
-                      value={item.valor}
-                      payer={item.sacado}
-                      installments={item.parcelas}
-                      limitDate={item.data}
-                      logo={item.logo}
-                    />
-                    <CardComponent
-                      origin="gain"
-                      name={item.nome}
-                      value={item.valor}
-                      payer={item.sacado}
-                      installments={item.parcelas}
-                      limitDate={item.data}
-                      logo={item.logo}
-                    />
-                    <CardComponent
-                      origin="gain"
-                      name={item.nome}
-                      value={item.valor}
-                      payer={item.sacado}
-                      installments={item.parcelas}
-                      limitDate={item.data}
-                      logo={item.logo}
-                    />
-                    <CardComponent
-                      origin="gain"
-                      name={item.nome}
-                      value={item.valor}
-                      payer={item.sacado}
-                      installments={item.parcelas}
-                      limitDate={item.data}
-                      logo={item.logo}
-                    />
-                    <CardComponent
-                      origin="gain"
-                      name={item.nome}
-                      value={item.valor}
-                      payer={item.sacado}
-                      installments={item.parcelas}
-                      limitDate={item.data}
-                      logo={item.logo}
-                    />
-                    <CardComponent
-                      origin="gain"
-                      name={item.nome}
-                      value={item.valor}
-                      payer={item.sacado}
-                      installments={item.parcelas}
-                      limitDate={item.data}
-                      logo={item.logo}
-                    />
-                  </>
-                ))}
-              {!expense && (
-                <>
-                  <SkeletonCard />
-                  <SkeletonCard />
-                  <SkeletonCard />
-                </>
-              )}
-            </Grid>
-          </Grid>
-        </Container>
+        <Header
+          origin="gain"
+          title="Valor total a receber"
+          value={totalValue}
+        />
+        <Guide listCard={gains} />
+
+        {!gains && <SkeletonCard />}
       </div>
       <FastMenu theme="gains" />
       <SideComponent />
