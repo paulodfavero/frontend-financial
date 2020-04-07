@@ -41,8 +41,8 @@ export default function RecipeReviewCard({
   const classes = useStyles();
   let date = "";
   if (limitDate) {
-    date = limitDate.split("/");
-    date = `${date[0]}.${date[1]}`;
+    date = limitDate.split("-");
+    date = `${date[2]}.${date[1]}`;
   }
 
   return (

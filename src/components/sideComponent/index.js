@@ -70,6 +70,7 @@ export default function SideComponent() {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const timer = useRef();
+
   const [state, setState] = useState({
     name: "",
     category: "",
@@ -113,6 +114,15 @@ export default function SideComponent() {
         .then(res => {
           handleBack();
           handleUpdateList(true);
+          setState({
+            name: "",
+            category: "",
+            value: "",
+            partials: "",
+            startDate: "",
+            limitDate: "",
+            expensesType: ""
+          });
         })
         .catch(erro => {
           console.log(erro);
@@ -135,6 +145,7 @@ export default function SideComponent() {
           name="name"
           variant="outlined"
           size="small"
+          value={state.name}
         />
         <TextField
           onChange={handleChange}
@@ -142,6 +153,7 @@ export default function SideComponent() {
           name="category"
           variant="outlined"
           size="small"
+          value={state.category}
         />
         <TextField
           onChange={handleChange}
@@ -150,6 +162,7 @@ export default function SideComponent() {
           variant="outlined"
           type="number"
           size="small"
+          value={state.value}
         />
         <TextField
           onChange={handleChange}
@@ -157,6 +170,7 @@ export default function SideComponent() {
           name="partials"
           variant="outlined"
           size="small"
+          value={state.partials}
         />
         <TextField
           onChange={handleChange}
@@ -166,6 +180,7 @@ export default function SideComponent() {
           size="small"
           type="date"
           InputLabelProps={{ shrink: true }}
+          value={state.startDate}
         />
         <TextField
           onChange={handleChange}
@@ -175,6 +190,7 @@ export default function SideComponent() {
           size="small"
           type="date"
           InputLabelProps={{ shrink: true }}
+          value={state.limitDate}
         />
 
         <FormControl variant="outlined" size="small">

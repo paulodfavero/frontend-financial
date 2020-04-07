@@ -93,7 +93,7 @@ export default function ScrollableTabsButtonAuto({ listCard }) {
               value={item.value}
               partials={item.partials}
               startDate={item.startDate}
-              limitDate={item.vencimento}
+              limitDate={item.limitDate}
               expensesTypes={item.expensesTypes}
             />
           ))}

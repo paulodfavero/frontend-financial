@@ -23,6 +23,8 @@ const useStyles = makeStyles(theme => ({
     width: "100vw",
     height: "100vh",
     transform: "translateX(0vw)",
+    paddingBottom: 60,
+
     "&.active": {
       transform: "translateX(-100vw)"
     }
