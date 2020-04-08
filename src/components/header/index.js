@@ -17,6 +17,9 @@ const useStyles = makeStyles(theme => ({
     flexDirection: "column",
     "&.expense": {
       background: `linear-gradient(0deg, #d43030 0%, #f34949 50%)`
+    },
+    "&.result": {
+      background: `linear-gradient(0deg, #008775 0%, #0bad97 50%)`
     }
   }
 }));

@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import * as R from "ramda";
 import clsx from "clsx";
-import moment from "moment-timezone";
-import { useSelector } from "react-redux";
 import { makeStyles } from "@material-ui/core";
 
 import api from "../../services/api";
@@ -12,19 +11,16 @@ import SideComponent from "../../components/sideComponent";
 import Guide from "../../components/guide";
 import SkeletonCard from "../../components/card/skeleton";
 
+import { gainsTotal } from "../../lib/gains/gains-reducer";
+
 const useStyles = makeStyles(theme => ({
   wrap: {
     overflowY: "auto",
     transition: "all .4s ease",
-    position: "fixed",
-    top: "0",
-    left: "0",
     zIndex: "1",
     width: "100vw",
-    height: "100vh",
     transform: "translateX(0vw)",
     paddingBottom: 60,
-
     "&.active": {
       transform: "translateX(-100vw)"
     }
@@ -33,32 +29,43 @@ const useStyles = makeStyles(theme => ({
 
 export default function Gains() {
   const classes = useStyles();
+  const dispatch = useDispatch();
   const [gains, setGains] = useState();
   const [totalValue, setTotalValue] = useState("");
   const isOpened = useSelector(state => R.path(["menu", "isOpened"], state));
+  const gainsList = useSelector(state =>
+    R.path(["gains", "createdList"], state)
+  );
 
   useEffect(() => {
-    // let dataFom = moment(new Date("2020", "3", "25"))
-    //   .locale("pt-br")
-    //   .format("dddd, ll");
-    // // console.log(dataFom);
-    async function fetchData() {
-      const res = await api.get("gains");
+    if (gainsList) {
+      async function fetchData() {
+        const res = await api.get("gains");
 
-      if (res.data.total <= 1) {
-        setTotalValue(res.data.docs[0].value);
-      } else {
-        let valorTotal = 0;
-        res.data.docs.map(item => {
-          return (valorTotal += parseInt(item.value));
-        });
-        setTotalValue(valorTotal);
+        const listSort = R.sortWith([R.ascend(R.prop("limitDate"))]);
+        const filtered = listSort(res.data.docs);
+
+        if (res.data.total <= 1) {
+          setTotalValue(res.data.docs[0].value);
+        } else {
+          let valorTotal = 0;
+          filtered.map(item => {
+            return (valorTotal += parseInt(item.value));
+          });
+          setTotalValue(valorTotal);
+        }
+        setGains(filtered);
       }
-      setGains(res.data.docs);
-    }
 
-    fetchData();
-  }, []);
+      fetchData();
+    }
+  }, [gainsList]);
+
+  useEffect(() => {
+    if (totalValue) {
+      dispatch(gainsTotal(totalValue));
+    }
+  }, [totalValue]);
 
   return (
     <>
@@ -72,8 +79,8 @@ export default function Gains() {
 
         {!gains && <SkeletonCard />}
       </div>
-      <FastMenu theme="gains" />
-      <SideComponent />
+      <FastMenu page="gains" />
+      <SideComponent page="gains" />
     </>
   );
 }

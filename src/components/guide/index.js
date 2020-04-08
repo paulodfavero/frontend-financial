@@ -87,6 +87,7 @@ export default function ScrollableTabsButtonAuto({ listCard }) {
         {listCard &&
           listCard.map(item => (
             <CardComponent
+              key={item.name}
               origin="gain"
               name={item.name}
               category={item.category}

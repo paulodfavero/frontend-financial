@@ -82,9 +82,6 @@ export const theme = createMuiTheme({
       }
     },
     MuiPaper: {
-      rounded: {
-        borderRadius: 0
-      },
       elevation1: {
         boxShadow: "none"
       }

@@ -1,11 +1,13 @@
 import React, { useState, useRef } from "react";
 import * as R from "ramda";
+import PropTypes from "prop-types";
 import clsx from "clsx";
 import api from "../../services/api";
 
 import { useDispatch, useSelector } from "react-redux";
 import { handleOpenMenu } from "../../lib/menuFast/menu-reducer";
-import { expensesListUpdated } from "../../lib/expenseList/expense-reducer";
+import { expensesListUpdated } from "../../lib/expenses/expenses-reducer";
+import { gainsListUpdated } from "../../lib/gains/gains-reducer";
 import {
   makeStyles,
   Typography,
@@ -47,7 +49,7 @@ const useStyles = makeStyles(theme => ({
     justifyContent: "center"
   },
   wrapper: {
-    margin: theme.spacing(1),
+    margin: theme.spacing(1, 0),
     position: "relative",
     width: "100%"
   },
@@ -65,7 +67,7 @@ const useStyles = makeStyles(theme => ({
     marginLeft: -12
   }
 }));
-export default function SideComponent() {
+export default function SideComponent({ page }) {
   const classes = useStyles();
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
@@ -93,13 +95,17 @@ export default function SideComponent() {
   };
   const handleBack = () => {
     dispatch(handleOpenMenu(false));
+    dispatch(expensesListUpdated(true));
+    dispatch(gainsListUpdated(true));
   };
   const handleUpdateList = status => {
     dispatch(expensesListUpdated(status));
+    dispatch(gainsListUpdated(status));
   };
 
   const handleSubmit = async e => {
     e.preventDefault();
+
     if (!loading) {
       setSuccess(false);
       setLoading(true);
@@ -110,7 +116,7 @@ export default function SideComponent() {
     }
     try {
       await api
-        .post("/expenses", state)
+        .post(`/${page}`, state)
         .then(res => {
           handleBack();
           handleUpdateList(true);
@@ -231,3 +237,7 @@ export default function SideComponent() {
     </div>
   );
 }
+
+SideComponent.propTypes = {
+  page: PropTypes.string.isRequired
+};

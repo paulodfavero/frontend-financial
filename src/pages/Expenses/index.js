@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import * as R from "ramda";
 import clsx from "clsx";
-import { useSelector } from "react-redux";
 
 import { makeStyles } from "@material-ui/core";
 
 import api from "../../services/api";
-import { expensesListUpdated } from "../../lib/expenseList/expense-reducer";
 
 import Header from "../../components/header";
 import FastMenu from "../../components/menuFast";
@@ -14,70 +13,69 @@ import SideComponent from "../../components/sideComponent";
 import Guide from "../../components/guide";
 import SkeletonCard from "../../components/card/skeleton";
 
+import { expensesTotal } from "../../lib/expenses/expenses-reducer";
+
 const useStyles = makeStyles(theme => ({
   wrap: {
     overflowY: "auto",
     transition: "all .4s ease",
-    position: "fixed",
-    top: "0",
-    left: "0",
     zIndex: "1",
     width: "100vw",
-    height: "100vh",
     transform: "translateX(0vw)",
     paddingBottom: 60,
     "&.active": {
       transform: "translateX(-100vw)"
     }
-  },
-  container: {
-    marginTop: -50
   }
 }));
 
 export default function Expenses() {
   const classes = useStyles();
+  const dispatch = useDispatch();
   const [expense, setExpense] = useState();
   const [totalValue, setTotalValue] = useState("");
   const isOpened = useSelector(state => R.path(["menu", "isOpened"], state));
   const expenseList = useSelector(state =>
-    R.path(["expensesListUpdated", "createdList"], state)
+    R.path(["expenses", "createdList"], state)
   );
 
   useEffect(() => {
-    console.log(expenseList);
     if (expenseList) {
       async function fetchData() {
         const res = await api.get("expenses");
+        const listSort = R.sortWith([R.ascend(R.prop("limitDate"))]);
+        const filtered = listSort(res.data.docs);
 
         if (res.data.total <= 1) {
           setTotalValue(res.data.docs[0].value);
         } else {
           let valorTotal = 0;
-          res.data.docs.map(item => {
+          filtered.map(item => {
             return (valorTotal += parseInt(item.value));
           });
           setTotalValue(valorTotal);
         }
-        setExpense(res.data.docs);
+        setExpense(filtered);
       }
       fetchData();
     }
   }, [expenseList]);
 
+  useEffect(() => {
+    if (totalValue) {
+      dispatch(expensesTotal(totalValue));
+    }
+  }, [totalValue]);
+
   return (
     <>
       <div className={clsx(classes.wrap, `${isOpened && "active"}`)}>
-        <Header
-          origin="expense"
-          title="Saldo atual em conta"
-          value={totalValue}
-        />
+        <Header origin="expense" title="Seu gasto, jovem" value={totalValue} />
         <Guide listCard={expense} />
         {!expense && <SkeletonCard />}
       </div>
-      <FastMenu theme="expenses" />
-      <SideComponent />
+      <FastMenu page="expenses" />
+      <SideComponent page="expenses" />
     </>
   );
 }

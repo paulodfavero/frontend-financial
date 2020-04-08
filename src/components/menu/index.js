@@ -4,8 +4,11 @@ import { Link } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import BottomNavigation from "@material-ui/core/BottomNavigation";
 import BottomNavigationAction from "@material-ui/core/BottomNavigationAction";
-import MoneyOffOutlinedIcon from "@material-ui/icons/MoneyOffOutlined";
-import AttachMoneyOutlinedIcon from "@material-ui/icons/AttachMoneyOutlined";
+import {
+  MoneyOffOutlined,
+  AttachMoneyOutlined,
+  SwapVerticalCircleOutlined
+} from "@material-ui/icons";
 
 const useStyles = makeStyles({
   root: {
@@ -42,15 +45,21 @@ export default function SimpleBottomNavigation() {
           <BottomNavigationAction
             component={Link}
             label="Expends"
-            icon={<MoneyOffOutlinedIcon />}
+            icon={<MoneyOffOutlined />}
             to="/expenses"
           />
 
           <BottomNavigationAction
             component={Link}
             label="Gains"
-            icon={<AttachMoneyOutlinedIcon />}
+            icon={<AttachMoneyOutlined />}
             to="/gains"
+          />
+          <BottomNavigationAction
+            component={Link}
+            label="Result"
+            icon={<SwapVerticalCircleOutlined />}
+            to="/result"
           />
         </BottomNavigation>
       )}

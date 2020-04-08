@@ -1,13 +1,14 @@
-import React, { useState } from "react";
+import React from "react";
 import clsx from "clsx";
 import PropTypes from "prop-types";
 import { useDispatch } from "react-redux";
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles, Button } from "@material-ui/core";
 import SpeedDial from "@material-ui/lab/SpeedDial";
 import SpeedDialIcon from "@material-ui/lab/SpeedDialIcon";
 
 import { handleOpenMenu } from "../../lib/menuFast/menu-reducer";
-import { expensesListUpdated } from "../../lib/expenseList/expense-reducer";
+import { expensesListUpdated } from "../../lib/expenses/expenses-reducer";
+import { gainsListUpdated } from "../../lib/gains/gains-reducer";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -22,40 +23,47 @@ const useStyles = makeStyles(theme => ({
     zIndex: 1
   },
   speedDial: {
+    width: 50,
+    minWidth: 50,
+    height: 50,
+    minHeight: 50,
+    borderRadius: "50%",
     position: "absolute",
-    "&.expenses > button, &.expenses > button:hover": {
+    color: "#ffffff",
+    "&.expenses, &.expenses:hover": {
       backgroundColor: theme.palette.primaryExpenses.main
     },
-    "&.gains > button, &.gains > button:hover": {
+    "&.gains, &.gains:hover": {
       backgroundColor: theme.palette.primaryGains.main
     }
   }
 }));
 
-export default function SpeedDialTooltipOpen({ theme }) {
+export default function SpeedDialTooltipOpen({ page }) {
   const classes = useStyles();
   const dispatch = useDispatch();
 
   const handleAdd = () => {
     dispatch(handleOpenMenu(true));
     dispatch(expensesListUpdated(false));
+    dispatch(gainsListUpdated(false));
   };
 
   return (
     <div className={classes.root}>
-      <SpeedDial
-        ariaLabel="SpeedDial tooltip example"
-        className={clsx(classes.speedDial, `${theme}`)}
-        icon={<SpeedDialIcon />}
+      <Button
+        className={clsx(classes.speedDial, `${page}`)}
         onClick={handleAdd}
-      />
+      >
+        <SpeedDialIcon />
+      </Button>
     </div>
   );
 }
 
 SpeedDialTooltipOpen.defaultProps = {
-  theme: "gains"
+  page: "gains"
 };
 SpeedDialTooltipOpen.propTypes = {
-  theme: PropTypes.string
+  page: PropTypes.string
 };
