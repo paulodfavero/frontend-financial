@@ -1,6 +1,6 @@
 const LISTED_GAINS = "LISTED_GAINS";
 const TOTAL_GAINS = "TOTAL_GAINS";
-const CREATED_LIST = "CREATED_LIST";
+const CREATED_LIST_GAINS = "CREATED_LIST_GAINS";
 
 const initialState = {
   createdList: true
@@ -13,13 +13,12 @@ export const reducer = (state = initialState, action) => {
         ...state,
         createdList: action.payload.createdList
       };
-
     case TOTAL_GAINS:
       return {
         ...state,
         value: action.payload.value
       };
-    case CREATED_LIST:
+    case CREATED_LIST_GAINS:
       return {
         ...state,
         itens: action.payload.itens
@@ -47,9 +46,9 @@ export const gainsTotal = value => {
   };
 };
 
-export const expensesList = itens => {
+export const gainsList = itens => {
   return {
-    type: CREATED_LIST,
+    type: CREATED_LIST_GAINS,
     payload: {
       itens
     }

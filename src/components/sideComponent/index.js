@@ -6,8 +6,17 @@ import api from "../../services/api";
 
 import { useDispatch, useSelector } from "react-redux";
 import { handleOpenMenu } from "../../lib/menuFast/menu-reducer";
-import { expensesListUpdated } from "../../lib/expenses/expenses-reducer";
-import { gainsListUpdated } from "../../lib/gains/gains-reducer";
+import {
+  expensesTotal,
+  expensesList
+} from "../../lib/expenses/expenses-reducer";
+import {
+  expensesGet,
+  expensesTotalValue
+} from "../../lib/expenses/expenses-selector";
+import { gainsTotal, gainsList } from "../../lib/gains/gains-reducer";
+import { gainsGet, gainsTotalValue } from "../../lib/gains/gains-selector";
+
 import {
   makeStyles,
   Typography,
@@ -86,6 +95,26 @@ export default function SideComponent({ page }) {
   const dispatch = useDispatch();
   const isOpened = useSelector(state => R.path(["menu", "isOpened"], state));
 
+  const getExpensesList = async () => {
+    try {
+      const res = await expensesGet();
+      dispatch(expensesList(res));
+      dispatch(expensesTotal(expensesTotalValue(res)));
+    } catch (error) {
+      console.log("ERROR TO GET EXPENSES LIST", error);
+    }
+  };
+
+  const getGainsList = async () => {
+    try {
+      const res = await gainsGet();
+      dispatch(gainsList(res));
+      dispatch(gainsTotal(gainsTotalValue(res)));
+    } catch (error) {
+      console.log("ERROR TO GET GAINS LIST", error);
+    }
+  };
+
   const handleChange = event => {
     const name = event.target.name;
     setState({
@@ -95,12 +124,6 @@ export default function SideComponent({ page }) {
   };
   const handleBack = () => {
     dispatch(handleOpenMenu(false));
-    dispatch(expensesListUpdated(true));
-    dispatch(gainsListUpdated(true));
-  };
-  const handleUpdateList = status => {
-    dispatch(expensesListUpdated(status));
-    dispatch(gainsListUpdated(status));
   };
 
   const handleSubmit = async e => {
@@ -115,24 +138,22 @@ export default function SideComponent({ page }) {
       }, 2000);
     }
     try {
-      await api
-        .post(`/${page}`, state)
-        .then(res => {
-          handleBack();
-          handleUpdateList(true);
-          setState({
-            name: "",
-            category: "",
-            value: "",
-            partials: "",
-            startDate: "",
-            limitDate: "",
-            expensesType: ""
-          });
-        })
-        .catch(erro => {
-          console.log(erro);
-        });
+      await api.post(`/${page}`, state);
+      handleBack();
+      if (page === "gains") {
+        getGainsList();
+      } else {
+        getExpensesList();
+      }
+      setState({
+        name: "",
+        category: "",
+        value: "",
+        partials: "",
+        startDate: "",
+        limitDate: "",
+        expensesType: ""
+      });
     } catch (error) {
       console.log("ERRO POST EXPENSES", error);
     }

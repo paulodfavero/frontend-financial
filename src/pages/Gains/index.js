@@ -11,7 +11,10 @@ import SideComponent from "../../components/sideComponent";
 import Guide from "../../components/guide";
 import SkeletonCard from "../../components/card/skeleton";
 
-import { gainsTotal } from "../../lib/gains/gains-reducer";
+import {
+  gainsListSelector,
+  gainsTotalSelector
+} from "../../lib/gains/gains-selector";
 
 const useStyles = makeStyles(theme => ({
   wrap: {
@@ -29,43 +32,9 @@ const useStyles = makeStyles(theme => ({
 
 export default function Gains() {
   const classes = useStyles();
-  const dispatch = useDispatch();
-  const [gains, setGains] = useState();
-  const [totalValue, setTotalValue] = useState("");
   const isOpened = useSelector(state => R.path(["menu", "isOpened"], state));
-  const gainsList = useSelector(state =>
-    R.path(["gains", "createdList"], state)
-  );
-
-  useEffect(() => {
-    if (gainsList) {
-      async function fetchData() {
-        const res = await api.get("gains");
-
-        const listSort = R.sortWith([R.ascend(R.prop("limitDate"))]);
-        const filtered = listSort(res.data.docs);
-
-        if (res.data.total <= 1) {
-          setTotalValue(res.data.docs[0].value);
-        } else {
-          let valorTotal = 0;
-          filtered.map(item => {
-            return (valorTotal += parseInt(item.value));
-          });
-          setTotalValue(valorTotal);
-        }
-        setGains(filtered);
-      }
-
-      fetchData();
-    }
-  }, [gainsList]);
-
-  useEffect(() => {
-    if (totalValue) {
-      dispatch(gainsTotal(totalValue));
-    }
-  }, [totalValue]);
+  const gainsGet = useSelector(state => gainsListSelector(state));
+  const gainsTotal = useSelector(state => gainsTotalSelector(state));
 
   return (
     <>
@@ -73,11 +42,11 @@ export default function Gains() {
         <Header
           origin="gain"
           title="Valor total a receber"
-          value={totalValue}
+          value={gainsTotal}
         />
-        <Guide listCard={gains} />
+        <Guide listCard={gainsGet} />
 
-        {!gains && <SkeletonCard />}
+        {!gainsGet && <SkeletonCard />}
       </div>
       <FastMenu page="gains" />
       <SideComponent page="gains" />

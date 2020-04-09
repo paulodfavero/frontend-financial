@@ -13,7 +13,10 @@ import SideComponent from "../../components/sideComponent";
 import Guide from "../../components/guide";
 import SkeletonCard from "../../components/card/skeleton";
 
-import { expensesTotal } from "../../lib/expenses/expenses-reducer";
+import {
+  expensesListSelector,
+  expensesTotalSelector
+} from "../../lib/expenses/expenses-selector";
 
 const useStyles = makeStyles(theme => ({
   wrap: {
@@ -31,48 +34,20 @@ const useStyles = makeStyles(theme => ({
 
 export default function Expenses() {
   const classes = useStyles();
-  const dispatch = useDispatch();
-  const [expense, setExpense] = useState();
-  const [totalValue, setTotalValue] = useState("");
   const isOpened = useSelector(state => R.path(["menu", "isOpened"], state));
-  const expenseList = useSelector(state =>
-    R.path(["expenses", "createdList"], state)
-  );
-
-  useEffect(() => {
-    if (expenseList) {
-      async function fetchData() {
-        const res = await api.get("expenses");
-        const listSort = R.sortWith([R.ascend(R.prop("limitDate"))]);
-        const filtered = listSort(res.data.docs);
-
-        if (res.data.total <= 1) {
-          setTotalValue(res.data.docs[0].value);
-        } else {
-          let valorTotal = 0;
-          filtered.map(item => {
-            return (valorTotal += parseInt(item.value));
-          });
-          setTotalValue(valorTotal);
-        }
-        setExpense(filtered);
-      }
-      fetchData();
-    }
-  }, [expenseList]);
-
-  useEffect(() => {
-    if (totalValue) {
-      dispatch(expensesTotal(totalValue));
-    }
-  }, [totalValue]);
+  const expensesGet = useSelector(state => expensesListSelector(state));
+  const expensesTotal = useSelector(state => expensesTotalSelector(state));
 
   return (
     <>
       <div className={clsx(classes.wrap, `${isOpened && "active"}`)}>
-        <Header origin="expense" title="Seu gasto, jovem" value={totalValue} />
-        <Guide listCard={expense} />
-        {!expense && <SkeletonCard />}
+        <Header
+          origin="expense"
+          title="Seu gasto, jovem"
+          value={expensesTotal}
+        />
+        <Guide listCard={expensesGet} />
+        {!expensesGet && <SkeletonCard />}
       </div>
       <FastMenu page="expenses" />
       <SideComponent page="expenses" />

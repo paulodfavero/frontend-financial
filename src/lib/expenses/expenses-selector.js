@@ -1,18 +1,11 @@
 import * as R from "ramda";
 import api from "../../services/api";
 
-export async function expensesGet() {
-  try {
-    const res = await api.get("/expenses");
-    console.log("FOI", res.data.docs);
-    return res.data.docs;
-  } catch (error) {
-    console.log("ERRRO", error);
-    return error;
-  }
-}
-export function expensesList(state) {
+export function expensesListSelector(state) {
   return R.path(["expenses", "itens"], state);
+}
+export function expensesTotalSelector(state) {
+  return R.path(["expenses", "value"], state);
 }
 
 export function expensesListOrder(state) {
@@ -28,5 +21,16 @@ export function expensesTotalValue(state) {
       return (valorTotal += parseInt(item.value));
     });
     return valorTotal;
+  }
+}
+
+export async function expensesGet() {
+  try {
+    const res = await api.get("/expenses");
+    const listOrdered = expensesListOrder(res.data.docs);
+    return listOrdered;
+  } catch (error) {
+    console.log("ERRRO", error);
+    return error;
   }
 }

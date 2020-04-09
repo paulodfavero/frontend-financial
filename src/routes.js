@@ -12,30 +12,40 @@ import Gains from "./pages/Gains";
 import Result from "./pages/Result";
 import Menu from "./components/menu";
 
-import api from "./services/api";
-
 import { expensesTotal, expensesList } from "./lib/expenses/expenses-reducer";
 import {
-  expensesListOrder,
+  expensesGet,
   expensesTotalValue
 } from "./lib/expenses/expenses-selector";
 
-import { gainsTotal } from "./lib/gains/gains-reducer";
-import { gainsTotalValue } from "./lib/gains/gains-selector";
+import { gainsTotal, gainsList } from "./lib/gains/gains-reducer";
+import { gainsGet, gainsTotalValue } from "./lib/gains/gains-selector";
 
 export default function Routes() {
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    async function fetchData() {
-      const res = await api.get("/expenses");
-      dispatch(expensesList(expensesListOrder(res.data.docs)));
-      dispatch(expensesTotal(expensesTotalValue(res.data.docs)));
-      const resGains = await api.get("/gains");
-      dispatch(gainsTotal(gainsTotalValue(resGains.data.docs)));
+  const getExpensesList = async () => {
+    try {
+      const res = await expensesGet();
+      dispatch(expensesList(res));
+      dispatch(expensesTotal(expensesTotalValue(res)));
+    } catch (error) {
+      console.log("ERROR TO GET EXPENSES LIST", error);
     }
-    fetchData();
-  }, []);
+  };
+
+  const getGainsList = async () => {
+    try {
+      const res = await gainsGet();
+      dispatch(gainsList(res));
+      dispatch(gainsTotal(gainsTotalValue(res)));
+    } catch (error) {
+      console.log("ERROR TO GET GAINS LIST", error);
+    }
+  };
+
+  getExpensesList();
+  getGainsList();
 
   return (
     <>
