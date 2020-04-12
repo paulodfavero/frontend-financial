@@ -1,11 +1,9 @@
-import React, { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React from "react";
+import { useSelector } from "react-redux";
 import * as R from "ramda";
 import clsx from "clsx";
 
 import { makeStyles } from "@material-ui/core";
-
-import api from "../../services/api";
 
 import Header from "../../components/header";
 import FastMenu from "../../components/menuFast";
@@ -15,7 +13,8 @@ import SkeletonCard from "../../components/card/skeleton";
 
 import {
   expensesListSelector,
-  expensesTotalSelector
+  expensesTotalSelector,
+  expensesMonthActive
 } from "../../lib/expenses/expenses-selector";
 
 const useStyles = makeStyles(theme => ({
@@ -36,7 +35,11 @@ export default function Expenses() {
   const classes = useStyles();
   const isOpened = useSelector(state => R.path(["menu", "isOpened"], state));
   const expensesGet = useSelector(state => expensesListSelector(state));
-  const expensesTotal = useSelector(state => expensesTotalSelector(state));
+  const expensesMonthGet = useSelector(state => expensesMonthActive(state));
+
+  const expensesTotal = useSelector(state =>
+    expensesTotalSelector(state, expensesMonthGet)
+  );
 
   return (
     <>

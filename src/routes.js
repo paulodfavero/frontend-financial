@@ -9,6 +9,7 @@ import "./styles/style.css";
 import Login from "./pages/Login";
 import Expenses from "./pages/Expenses";
 import Gains from "./pages/Gains";
+import Home from "./pages/home";
 import Result from "./pages/Result";
 import Menu from "./components/menu";
 
@@ -57,6 +58,7 @@ export default function Routes() {
             <Route path="/expenses" component={Expenses} />
             <Route path="/gains" component={Gains} />
             <Route path="/result" component={Result} />
+            <Route path="/home" component={Home} />
           </Switch>
 
           <Menu />

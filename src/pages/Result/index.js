@@ -3,40 +3,54 @@ import { useSelector } from "react-redux";
 import * as R from "ramda";
 import { makeStyles, Typography, Card, CardContent } from "@material-ui/core";
 
+import {
+  expensesTotalSelector,
+  expensesMonthActive
+} from "../../lib/expenses/expenses-selector";
+import {
+  gainsListSelector,
+  gainsTotalSelector,
+  gainsMonthActive
+} from "../../lib/gains/gains-selector";
+
 import Header from "../../components/header";
+import Guide from "../../components/guide";
+import SkeletonCard from "../../components/card/skeleton";
 
 const useStyles = makeStyles(theme => ({
   wrap: {
-    display: "flex",
-    flexDirection: "column",
-    padding: theme.spacing(4),
-    textAlign: "center",
-    flex: 1,
-    justifyContent: "center"
+    overflowY: "auto",
+    transition: "all .4s ease",
+    zIndex: "1",
+    width: "100vw",
+    transform: "translateX(0vw)",
+    paddingBottom: 60
   }
 }));
 
 export default function Login() {
   const classes = useStyles();
-  const [result, setResult] = useState(0);
-  const totalExpense = useSelector(state =>
-    R.path(["expenses", "value"], state)
-  );
-  const totalGains = useSelector(state => R.path(["gains", "value"], state));
 
-  useEffect(() => {
-    setResult(totalGains - totalExpense);
-  }, [totalGains, totalExpense]);
+  const gainsMonthGet = useSelector(state => gainsMonthActive(state));
+  const gainsTotal = useSelector(state =>
+    gainsTotalSelector(state, gainsMonthGet)
+  );
+
+  const expensesMonthGet = useSelector(state => expensesMonthActive(state));
+  const expensesTotal = useSelector(state =>
+    expensesTotalSelector(state, expensesMonthGet)
+  );
 
   return (
     <>
-      <Header origin="result" title="Quanto vai sobrar" value={result} />
       <div className={classes.wrap}>
-        <Card>
-          <CardContent>
-            <Typography variant="h1">Teste</Typography>
-          </CardContent>
-        </Card>
+        <Header
+          origin="result"
+          title="Quanto vai sobrar"
+          value={gainsTotal - expensesTotal}
+        />
+        <Guide />
+        {/* {!expensesGet && <SkeletonCard />} */}
       </div>
     </>
   );

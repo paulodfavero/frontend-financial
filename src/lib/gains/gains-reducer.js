@@ -1,9 +1,17 @@
+import moment from "moment-timezone";
+
 const LISTED_GAINS = "LISTED_GAINS";
 const TOTAL_GAINS = "TOTAL_GAINS";
 const CREATED_LIST_GAINS = "CREATED_LIST_GAINS";
+const ACTIVED_MONTH = "ACTIVED_MONTH";
+
+const getCurrentMonth = () => {
+  return parseInt(moment(new Date()).format("M") - 1);
+};
 
 const initialState = {
-  createdList: true
+  createdList: true,
+  active: ""
 };
 
 export const reducer = (state = initialState, action) => {
@@ -22,6 +30,11 @@ export const reducer = (state = initialState, action) => {
       return {
         ...state,
         itens: action.payload.itens
+      };
+    case ACTIVED_MONTH:
+      return {
+        ...state,
+        active: action.payload.active
       };
 
     default:
@@ -51,6 +64,15 @@ export const gainsList = itens => {
     type: CREATED_LIST_GAINS,
     payload: {
       itens
+    }
+  };
+};
+
+export const gainsMonth = active => {
+  return {
+    type: ACTIVED_MONTH,
+    payload: {
+      active
     }
   };
 };

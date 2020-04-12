@@ -31,7 +31,7 @@ export default function Header({ title, value, origin }) {
     <div className={clsx(classes.header, `${origin}`)}>
       <Typography variant="body2">{title}</Typography>
       <Typography variant="h1" className={classes.title}>
-        {FormatNumber(value)}
+        {value ? FormatNumber(value) : "..."}
       </Typography>
     </div>
   );

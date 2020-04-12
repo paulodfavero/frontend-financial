@@ -1,5 +1,8 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import PropTypes from "prop-types";
+import moment from "moment-timezone";
+
 import {
   makeStyles,
   Container,
@@ -11,6 +14,9 @@ import {
 } from "@material-ui/core";
 
 import CardComponent from "../card";
+
+import { gainsMonthActive } from "../../lib/gains/gains-selector";
+import { gainsMonth } from "../../lib/gains/gains-reducer";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -51,11 +57,25 @@ const useStyles = makeStyles(theme => ({
 
 export default function ScrollableTabsButtonAuto({ listCard }) {
   const classes = useStyles();
-  const [value, setValue] = React.useState(0);
+  const dispatch = useDispatch();
+  const [value, setValue] = useState(0);
+  const gainsMonthGet = useSelector(state => gainsMonthActive(state));
 
   const handleChange = (event, newValue) => {
+    dispatch(gainsMonth(newValue));
     setValue(newValue);
   };
+
+  const getCurrentMonth = () => {
+    if (gainsMonthGet) {
+      return gainsMonthGet;
+    }
+    return parseInt(moment(new Date()).format("M") - 1);
+  };
+
+  useEffect(() => {
+    handleChange("", getCurrentMonth());
+  }, []);
 
   return (
     <div className={classes.root}>
@@ -83,55 +103,25 @@ export default function ScrollableTabsButtonAuto({ listCard }) {
           <Tab label="Dez" {...a11yProps(11)} />
         </Tabs>
       </AppBar>
-      <TabPanel value={value} index={0}>
-        {listCard &&
-          listCard.map(item => (
-            <CardComponent
-              key={item.name}
-              origin="gain"
-              name={item.name}
-              category={item.category}
-              value={item.value}
-              partials={item.partials}
-              startDate={item.startDate}
-              limitDate={item.limitDate}
-              expensesTypes={item.expensesTypes}
-            />
-          ))}
-      </TabPanel>
-      <TabPanel value={value} index={1}>
-        Fev
-      </TabPanel>
-      <TabPanel value={value} index={2}>
-        Mar
-      </TabPanel>
-      <TabPanel value={value} index={3}>
-        Abr
-      </TabPanel>
-      <TabPanel value={value} index={4}>
-        Mai
-      </TabPanel>
-      <TabPanel value={value} index={5}>
-        Jun
-      </TabPanel>
-      <TabPanel value={value} index={6}>
-        Jul
-      </TabPanel>
-      <TabPanel value={value} index={7}>
-        Ago
-      </TabPanel>
-      <TabPanel value={value} index={8}>
-        Set
-      </TabPanel>
-      <TabPanel value={value} index={9}>
-        Out
-      </TabPanel>
-      <TabPanel value={value} index={10}>
-        Nov
-      </TabPanel>
-      <TabPanel value={value} index={11}>
-        Dez
-      </TabPanel>
+
+      {listCard &&
+        listCard.map((item, index) => (
+          <TabPanel value={value} index={index}>
+            {item.map(item => (
+              <CardComponent
+                key={item.name}
+                origin="gain"
+                name={item.name}
+                category={item.category}
+                value={item.value}
+                partials={item.partials}
+                startDate={item.startDate}
+                limitDate={item.limitDate}
+                expensesTypes={item.expensesTypes}
+              />
+            ))}
+          </TabPanel>
+        ))}
     </div>
   );
 }
