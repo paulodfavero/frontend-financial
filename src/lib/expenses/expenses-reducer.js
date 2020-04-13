@@ -1,13 +1,7 @@
-import moment from "moment-timezone";
-
 const LISTED_EXPENSES = "LISTED_EXPENSES";
 const TOTAL_EXPENSES = "TOTAL_EXPENSES";
 const CREATED_LIST_EXPENSES = "CREATED_LIST_EXPENSES";
 const ACTIVED_MONTH = "ACTIVED_MONTH";
-
-const getCurrentMonth = () => {
-  return parseInt(moment(new Date()).format("M") - 1);
-};
 
 const initialState = {
   createdList: true,

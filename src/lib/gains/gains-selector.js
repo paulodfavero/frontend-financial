@@ -1,5 +1,10 @@
 import * as R from "ramda";
 import api from "../../services/api";
+import moment from "moment-timezone";
+
+const getCurrentYear = () => {
+  return moment(new Date()).format("Y");
+};
 
 export function gainsListSelector(state) {
   return R.path(["gains", "itens"], state);
@@ -17,8 +22,8 @@ export function gainsListOrder(state) {
   return sorted(state);
 }
 
-let totalPerMonth = [];
 export function gainsTotalValue(state) {
+  let totalPerMonth = [];
   if (state.total <= 1) {
     return state.docs[0].value;
   } else {
@@ -36,17 +41,20 @@ export function gainsTotalValue(state) {
   }
 }
 
-let filteredPerMonth = [];
 export async function gainsGet() {
   try {
     const res = await api.get("/gains");
     const listOrdered = gainsListOrder(res.data.docs);
+    let filteredPerMonth = [];
 
     for (let i = 1; i <= 12; i++) {
       filteredPerMonth.push(
         listOrdered.filter(item => {
           let mes = item.limitDate.split("-");
-          return mes[1] === i.toString().padStart(2, 0);
+          return (
+            mes[1] === i.toString().padStart(2, 0) &&
+            mes[0] === getCurrentYear()
+          );
         })
       );
     }
