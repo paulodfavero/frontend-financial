@@ -52,9 +52,11 @@ const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
     width: "100%",
-    borderRadius: "10px 10px 0 0 ",
-    overflow: "hidden",
     marginTop: -10
+  },
+  border: {
+    borderRadius: "10px 10px 0 0 ",
+    overflow: "hidden"
   }
 }));
 
@@ -82,7 +84,7 @@ export default function ScrollableTabsButtonAuto({ listCard }) {
 
   return (
     <div className={classes.root}>
-      <AppBar position="static" color="default">
+      <AppBar position="static" color="default" className={classes.border}>
         <Tabs
           value={value}
           onChange={handleChange}
