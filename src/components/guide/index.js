@@ -51,7 +51,10 @@ function a11yProps(index) {
 const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
-    width: "100%"
+    width: "100%",
+    borderRadius: "10px 10px 0 0 ",
+    overflow: "hidden",
+    marginTop: -10
   }
 }));
 
