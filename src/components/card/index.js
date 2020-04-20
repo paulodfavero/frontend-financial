@@ -34,7 +34,7 @@ export default function RecipeReviewCard({
   value,
   partials,
   startDate,
-  expensesTypes,
+  expensesType,
   limitDate,
   payer
 }) {
@@ -44,7 +44,9 @@ export default function RecipeReviewCard({
     date = limitDate.split("-");
     date = `${date[2]}.${date[1]}`;
   }
-
+  const remainingAmount =
+    (parseInt(partials.total) + 1 - parseInt(partials.current)) *
+    parseInt(value);
   return (
     <>
       <Card className={classes.root}>
@@ -75,6 +77,16 @@ export default function RecipeReviewCard({
               {payer || name} /{" "}
               <span className={classes.smallFont}>{category}</span>
             </Typography>
+            {expensesType !== "Fixa" && partials.total && (
+              <>
+                <Typography variant="body2" color="textSecondary">
+                  <span
+                    className={classes.smallFont}
+                  >{`${partials.current}/${partials.total}`}</span>
+                </Typography>
+                {remainingAmount}
+              </>
+            )}
           </div>
           <Typography variant="body1" color="textSecondary">
             <strong>{FormatNumber(value)}</strong>

@@ -86,7 +86,9 @@ export default function SideComponent({ page }) {
     name: "",
     category: "",
     value: "",
-    partials: "",
+    partials: {
+      total: ""
+    },
     startDate: "",
     limitDate: "",
     expensesType: ""
@@ -117,10 +119,19 @@ export default function SideComponent({ page }) {
 
   const handleChange = event => {
     const name = event.target.name;
-    setState({
-      ...state,
-      [name]: event.target.value
-    });
+    if (name === "partials") {
+      setState({
+        ...state,
+        partials: { total: event.target.value }
+      });
+    } else {
+      setState({
+        ...state,
+        [name]: event.target.value
+      });
+    }
+
+    console.log(state);
   };
   const handleBack = () => {
     dispatch(handleOpenMenu(false));
@@ -149,7 +160,9 @@ export default function SideComponent({ page }) {
         name: "",
         category: "",
         value: "",
-        partials: "",
+        partials: {
+          total: ""
+        },
         startDate: "",
         limitDate: "",
         expensesType: ""
@@ -197,7 +210,7 @@ export default function SideComponent({ page }) {
           name="partials"
           variant="outlined"
           size="small"
-          value={state.partials}
+          value={state.partials.total}
         />
         <TextField
           onChange={handleChange}
