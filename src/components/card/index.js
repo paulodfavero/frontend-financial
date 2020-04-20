@@ -77,7 +77,7 @@ export default function RecipeReviewCard({
               {payer || name} /{" "}
               <span className={classes.smallFont}>{category}</span>
             </Typography>
-            {expensesType !== "Fixa" && partials.total && (
+            {expensesType != "Fixa" && partials.total && (
               <>
                 <Typography variant="body2" color="textSecondary">
                   <span
