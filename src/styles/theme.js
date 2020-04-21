@@ -97,6 +97,28 @@ export const theme = createMuiTheme({
         padding: "16px 16px"
       }
     },
+    MuiExpansionPanel: {
+      root: {
+        margin: "0px !important",
+        "&.Mui-expanded": {
+          background: "#ccc"
+        }
+      }
+    },
+    MuiExpansionPanelDetails: {
+      root: {
+        padding: 0
+      }
+    },
+    MuiExpansionPanelSummary: {
+      root: {
+        padding: 0,
+        minHeight: "auto !important"
+      },
+      content: {
+        margin: "0px !important"
+      }
+    },
     MuiCardContent: {
       root: {
         display: "flex",
