@@ -106,27 +106,32 @@ export default function RecipeReviewCard({
             </CardContent>
           </Card>
         </ExpansionPanelSummary>
-        {expensesType !== "Fixa" && partials.total && (
-          <ExpansionPanelDetails>
-            <Card className={classes.root}>
-              <CardContent>
-                <Typography variant="body2" color="textSecondary">
-                  Valor Restante:
-                </Typography>
-                <Typography variant="body1" color="textSecondary">
-                  {FormatNumber(remainingAmount)}
-                </Typography>
-                <Switch
-                  checked={state.checkedA}
-                  onChange={handleChange}
-                  name="checkedA"
-                  inputProps={{ "aria-label": "secondary checkbox" }}
-                  color="primary"
-                />
-              </CardContent>
-            </Card>
-          </ExpansionPanelDetails>
-        )}
+        <ExpansionPanelDetails>
+          <Card className={classes.root}>
+            <CardContent>
+              <div>
+                {expensesType !== "Fixa" && partials.total && (
+                  <>
+                    <Typography variant="body2" color="textSecondary">
+                      Valor Restante:
+                    </Typography>
+                    <Typography variant="body1" color="textSecondary">
+                      {FormatNumber(remainingAmount)}
+                    </Typography>
+                  </>
+                )}
+              </div>
+
+              <Switch
+                checked={state.checkedA}
+                onChange={handleChange}
+                name="checkedA"
+                inputProps={{ "aria-label": "secondary checkbox" }}
+                color="primary"
+              />
+            </CardContent>
+          </Card>
+        </ExpansionPanelDetails>
       </ExpansionPanel>
     </>
   );
