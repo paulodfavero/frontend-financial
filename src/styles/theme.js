@@ -99,9 +99,11 @@ export const theme = createMuiTheme({
     },
     MuiExpansionPanel: {
       root: {
-        margin: "0px !important",
+        margin: "0px ",
         "&.Mui-expanded": {
-          background: "#ccc"
+          margin: "3px 0px 12px 0",
+          overflow: "hidden",
+          borderRadius: "0 0 15px 15px"
         }
       }
     },

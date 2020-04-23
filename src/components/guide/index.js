@@ -123,6 +123,7 @@ export default function ScrollableTabsButtonAuto({ listCard }) {
                 startDate={item.startDate}
                 limitDate={item.limitDate}
                 expensesType={item.expensesType}
+                status={item.status}
               />
             ))}
           </TabPanel>

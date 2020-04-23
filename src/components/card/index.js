@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   makeStyles,
   ExpansionPanel,
@@ -6,9 +6,9 @@ import {
   Typography,
   ExpansionPanelDetails,
   CardContent,
-  Card
+  Card,
+  Switch
 } from "@material-ui/core";
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 
 import { FormatNumber } from "../../utils/formaterNumber";
 
@@ -34,6 +34,11 @@ const useStyles = makeStyles(theme => ({
   flex: {
     display: "flex",
     alignItems: "center"
+  },
+  payed: {
+    "& $root": {
+      background: "#c0fdc0"
+    }
   }
 }));
 
@@ -46,9 +51,18 @@ export default function RecipeReviewCard({
   startDate,
   expensesType,
   limitDate,
-  payer
+  payer,
+  status
 }) {
   const classes = useStyles();
+
+  const [state, setState] = useState({
+    checkedA: status
+  });
+
+  const handleChange = event => {
+    setState({ ...state, [event.target.name]: event.target.checked });
+  };
   let date = "";
   if (limitDate) {
     date = limitDate.split("-");
@@ -59,7 +73,7 @@ export default function RecipeReviewCard({
     parseInt(value);
   return (
     <>
-      <ExpansionPanel>
+      <ExpansionPanel className={state.checkedA && classes.payed}>
         <ExpansionPanelSummary
           aria-controls="panel1a-content"
           id="panel1a-header"
@@ -102,6 +116,13 @@ export default function RecipeReviewCard({
                 <Typography variant="body1" color="textSecondary">
                   {FormatNumber(remainingAmount)}
                 </Typography>
+                <Switch
+                  checked={state.checkedA}
+                  onChange={handleChange}
+                  name="checkedA"
+                  inputProps={{ "aria-label": "secondary checkbox" }}
+                  color="primary"
+                />
               </CardContent>
             </Card>
           </ExpansionPanelDetails>
