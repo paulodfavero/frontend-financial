@@ -42,12 +42,17 @@ export function gainsListOrder(state) {
 export async function gainsListOrderType(type) {
   try {
     const state = await api.get("/gains");
-    const sorted = await R.filter(
-      item => item.gainsType === type,
-      state.data.docs
-    );
+    const res = state.data.docs;
+    if (!type) {
+      const listOrdered = gainsListOrder(res);
+      const filtered = filteredPerMonth(listOrdered);
+      return filtered;
+    }
+    const sorted = await R.filter(item => item.gainsType === type, res);
     const listOrdered = gainsListOrder(sorted);
-    return filteredPerMonth(listOrdered);
+    const filtered = filteredPerMonth(listOrdered);
+
+    return filtered;
   } catch (error) {
     console.log("ERROUuUUU", error);
   }
