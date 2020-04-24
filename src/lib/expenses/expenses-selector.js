@@ -45,11 +45,13 @@ export async function expensesListOrderType(type) {
     const state = await api.get("/expenses");
     const res = state.data.docs;
     if (!type) {
-      const filtered = filteredPerMonth(res);
+      const listOrdered = expensesListOrder(res);
+      const filtered = filteredPerMonth(listOrdered);
       return filtered;
     }
     const sorted = await R.filter(item => item.expensesType === type, res);
-    const filtered = filteredPerMonth(sorted);
+    const listOrdered = expensesListOrder(sorted);
+    const filtered = filteredPerMonth(listOrdered);
 
     return filtered;
   } catch (error) {

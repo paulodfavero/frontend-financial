@@ -46,7 +46,8 @@ export async function gainsListOrderType(type) {
       item => item.gainsType === type,
       state.data.docs
     );
-    return filteredPerMonth(sorted);
+    const listOrdered = gainsListOrder(sorted);
+    return filteredPerMonth(listOrdered);
   } catch (error) {
     console.log("ERROUuUUU", error);
   }

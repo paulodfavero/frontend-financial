@@ -111,10 +111,10 @@ export default function ScrollableTabsButtonAuto({ listCard, origin }) {
 
       {listCard &&
         listCard.map((item, index) => (
-          <TabPanel value={value} index={index}>
+          <TabPanel key={index} value={value} index={index}>
             {item.map(item => (
               <CardComponent
-                key={item.name}
+                key={item._id}
                 id={item._id}
                 origin={origin}
                 name={item.name}
