@@ -7,6 +7,23 @@ const getCurrentYear = () => {
   return moment(new Date()).format("Y");
 };
 
+function filteredPerMonth(list) {
+  let filteredPerMonth = [];
+  for (let i = 1; i <= 12; i++) {
+    filteredPerMonth.push(
+      list &&
+        list.filter(item => {
+          let mes = item.limitDate.split("-");
+          return (
+            mes[1] === i.toString().padStart(2, 0) &&
+            mes[0] === getCurrentYear()
+          );
+        })
+    );
+  }
+  return filteredPerMonth;
+}
+
 export function expensesListSelector(state) {
   return R.path(["expenses", "itens"], state);
 }
@@ -21,6 +38,19 @@ export function expensesMonthActive(state) {
 export function expensesListOrder(state) {
   const sorted = R.sortWith([R.ascend(R.prop("limitDate"))]);
   return sorted(state);
+}
+
+export async function expensesListOrderType(type) {
+  try {
+    const state = await api.get("/expenses");
+    const sorted = await R.filter(
+      item => item.expensesType === type,
+      state.data.docs
+    );
+    return filteredPerMonth(sorted);
+  } catch (error) {
+    console.log("ERROUuUUU", error);
+  }
 }
 
 export function expensesTotalValue(state) {
@@ -46,20 +76,7 @@ export async function expensesGet() {
   try {
     const res = await api.get("/expenses");
     const listOrdered = expensesListOrder(res.data.docs);
-    let filteredPerMonth = [];
-    for (let i = 1; i <= 12; i++) {
-      filteredPerMonth.push(
-        listOrdered &&
-          listOrdered.filter(item => {
-            let mes = item.limitDate.split("-");
-            return (
-              mes[1] === i.toString().padStart(2, 0) &&
-              mes[0] === getCurrentYear()
-            );
-          })
-      );
-    }
-    return filteredPerMonth;
+    return filteredPerMonth(listOrdered);
   } catch (error) {
     console.log("ERRRO", error);
     return error;

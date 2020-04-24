@@ -6,6 +6,23 @@ const getCurrentYear = () => {
   return moment(new Date()).format("Y");
 };
 
+function filteredPerMonth(list) {
+  let filteredPerMonth = [];
+  for (let i = 1; i <= 12; i++) {
+    filteredPerMonth.push(
+      list &&
+        list.filter(item => {
+          let mes = item.limitDate.split("-");
+          return (
+            mes[1] === i.toString().padStart(2, 0) &&
+            mes[0] === getCurrentYear()
+          );
+        })
+    );
+  }
+  return filteredPerMonth;
+}
+
 export function gainsListSelector(state) {
   return R.path(["gains", "itens"], state);
 }
@@ -20,6 +37,19 @@ export function gainsMonthActive(state) {
 export function gainsListOrder(state) {
   const sorted = R.sortWith([R.ascend(R.prop("limitDate"))]);
   return sorted(state);
+}
+
+export async function gainsListOrderType(type) {
+  try {
+    const state = await api.get("/gains");
+    const sorted = await R.filter(
+      item => item.gainsType === type,
+      state.data.docs
+    );
+    return filteredPerMonth(sorted);
+  } catch (error) {
+    console.log("ERROUuUUU", error);
+  }
 }
 
 export function gainsTotalValue(state) {
@@ -45,20 +75,7 @@ export async function gainsGet() {
   try {
     const res = await api.get("/gains");
     const listOrdered = gainsListOrder(res.data.docs);
-    let filteredPerMonth = [];
-
-    for (let i = 1; i <= 12; i++) {
-      filteredPerMonth.push(
-        listOrdered.filter(item => {
-          let mes = item.limitDate.split("-");
-          return (
-            mes[1] === i.toString().padStart(2, 0) &&
-            mes[0] === getCurrentYear()
-          );
-        })
-      );
-    }
-    return filteredPerMonth;
+    return filteredPerMonth(listOrdered);
   } catch (error) {
     console.log("ERRRO", error);
     return error;

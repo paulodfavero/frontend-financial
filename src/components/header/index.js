@@ -1,7 +1,20 @@
-import React from "react";
+import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 import PropTypes from "prop-types";
 import clsx from "clsx";
-import { makeStyles, Typography } from "@material-ui/core";
+import {
+  makeStyles,
+  Typography,
+  IconButton,
+  Menu,
+  MenuItem
+} from "@material-ui/core";
+import MoreVertIcon from "@material-ui/icons/MoreVert";
+
+import { expensesListOrderType } from "../../lib/expenses/expenses-selector";
+import { expensesList } from "../../lib/expenses/expenses-reducer";
+import { gainsListOrderType } from "../../lib/gains/gains-selector";
+import { gainsList } from "../../lib/gains/gains-reducer";
 
 import { FormatNumber } from "../../utils/formaterNumber";
 
@@ -21,11 +34,36 @@ const useStyles = makeStyles(theme => ({
     "&.result": {
       background: `linear-gradient(0deg, #008775 0%, #0bad97 50%)`
     }
+  },
+  menu: {
+    position: "absolute",
+    top: 0,
+    right: 0
   }
 }));
 
 export default function Header({ title, value, origin }) {
   const classes = useStyles();
+  const dispatch = useDispatch();
+
+  const [anchorEl, setAnchorEl] = useState(null);
+  const open = Boolean(anchorEl);
+
+  const handleClick = event => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = async (type, origin) => {
+    setAnchorEl(null);
+
+    if (origin === "gains") {
+      const listOrdered = await gainsListOrderType(type);
+      dispatch(gainsList(listOrdered));
+    } else {
+      const listOrdered = await expensesListOrderType(type);
+      dispatch(expensesList(listOrdered));
+    }
+  };
 
   return (
     <div className={clsx(classes.header, `${origin}`)}>
@@ -33,6 +71,33 @@ export default function Header({ title, value, origin }) {
       <Typography variant="h1" className={classes.title}>
         {value ? FormatNumber(value) : "..."}
       </Typography>
+      <div className={classes.menu}>
+        <IconButton
+          aria-label="more"
+          aria-controls="long-menu"
+          aria-haspopup="true"
+          onClick={handleClick}
+        >
+          <MoreVertIcon style={{ color: "#ffffff" }} />
+        </IconButton>
+        <Menu
+          id="long-menu"
+          anchorEl={anchorEl}
+          keepMounted
+          open={open}
+          onClose={handleClose}
+          PaperProps={{
+            style: {
+              width: "20ch"
+            }
+          }}
+        >
+          <MenuItem onClick={() => handleClose("Fixa")}>Despesa Fixa</MenuItem>
+          <MenuItem onClick={() => handleClose("Variável")}>
+            Despesa Variável
+          </MenuItem>
+        </Menu>
+      </div>
     </div>
   );
 }
