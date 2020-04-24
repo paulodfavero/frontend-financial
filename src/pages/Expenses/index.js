@@ -45,7 +45,7 @@ export default function Expenses() {
     <>
       <div className={clsx(classes.wrap, `${isOpened && "active"}`)}>
         <Header
-          origin="expense"
+          origin="expenses"
           title="Seu gasto, jovem"
           value={expensesTotal}
         />

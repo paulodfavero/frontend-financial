@@ -37,7 +37,7 @@ const useStyles = makeStyles(theme => ({
     alignItems: "center",
     justifyContent: "center",
     flexDirection: "column",
-    "&.expense": {
+    "&.expenses": {
       background: `linear-gradient(0deg, #d43030 0%, #f34949 50%)`
     },
     "&.result": {
@@ -103,8 +103,10 @@ export default function Header({ title, value, origin }) {
             }
           }}
         >
-          <MenuItem onClick={() => handleClose("Fixa")}>Despesa Fixa</MenuItem>
-          <MenuItem onClick={() => handleClose("Variável")}>
+          <MenuItem onClick={() => handleClose("Fixa", origin)}>
+            Despesa Fixa
+          </MenuItem>
+          <MenuItem onClick={() => handleClose("Variável", origin)}>
             Despesa Variável
           </MenuItem>
           <MenuItem onClick={() => handleClose()}>Todas</MenuItem>

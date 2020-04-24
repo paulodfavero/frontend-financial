@@ -45,7 +45,7 @@ export default function Gains() {
     <>
       <div className={clsx(classes.wrap, `${isOpened && "active"}`)}>
         <Header
-          origin="gain"
+          origin="gains"
           title="Valor total a receber"
           value={gainsTotal}
         />
