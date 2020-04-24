@@ -43,7 +43,7 @@ export async function gainsListOrderType(type) {
   try {
     const state = await api.get("/gains");
     const res = state.data.docs;
-    if (!type) {
+    if (type === "todos") {
       const listOrdered = gainsListOrder(res);
       const filtered = filteredPerMonth(listOrdered);
       return filtered;

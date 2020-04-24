@@ -44,7 +44,7 @@ export async function expensesListOrderType(type) {
   try {
     const state = await api.get("/expenses");
     const res = state.data.docs;
-    if (!type) {
+    if (type === "todos") {
       const listOrdered = expensesListOrder(res);
       const filtered = filteredPerMonth(listOrdered);
       return filtered;

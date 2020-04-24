@@ -65,14 +65,16 @@ export default function Header({ title, value, origin }) {
   const handleClose = async (type, origin) => {
     setAnchorEl(null);
 
-    if (origin === "gains") {
-      const listOrdered = await gainsListOrderType(type);
-      dispatch(gainsList(listOrdered));
-      dispatch(gainsTotal(gainsTotalValue(listOrdered)));
-    } else {
-      const listOrdered = await expensesListOrderType(type);
-      dispatch(expensesList(listOrdered));
-      dispatch(expensesTotal(expensesTotalValue(listOrdered)));
+    if (origin !== "backdropClick") {
+      if (origin === "gains") {
+        const listOrdered = await gainsListOrderType(type);
+        dispatch(gainsList(listOrdered));
+        dispatch(gainsTotal(gainsTotalValue(listOrdered)));
+      } else {
+        const listOrdered = await expensesListOrderType(type);
+        dispatch(expensesList(listOrdered));
+        dispatch(expensesTotal(expensesTotalValue(listOrdered)));
+      }
     }
   };
 
@@ -104,12 +106,14 @@ export default function Header({ title, value, origin }) {
           }}
         >
           <MenuItem onClick={() => handleClose("Fixa", origin)}>
-            Despesa Fixa
+            {origin === "expenses" ? "Despesa " : "Receita "} Fixa
           </MenuItem>
           <MenuItem onClick={() => handleClose("Variável", origin)}>
-            Despesa Variável
+            {origin === "expenses" ? "Despesa " : "Receita "} Variável
           </MenuItem>
-          <MenuItem onClick={() => handleClose()}>Todas</MenuItem>
+          <MenuItem onClick={() => handleClose("todos", origin)}>
+            Todas
+          </MenuItem>
         </Menu>
       </div>
     </div>
