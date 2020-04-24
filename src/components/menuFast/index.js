@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import clsx from "clsx";
 import PropTypes from "prop-types";
 import { useDispatch } from "react-redux";
@@ -13,14 +13,18 @@ import { gainsListUpdated } from "../../lib/gains/gains-reducer";
 const useStyles = makeStyles(theme => ({
   root: {
     position: "fixed",
-    bottom: theme.spacing(10),
+    bottom: -20,
     right: theme.spacing(9),
     height: 350,
     transform: "translateZ(0px)",
     flexGrow: 1,
     display: "flex",
     alignItems: "flex-end",
-    zIndex: 1
+    zIndex: 1,
+    transition: "all .3s ease-out",
+    "&.show": {
+      bottom: theme.spacing(10)
+    }
   },
   speedDial: {
     width: 50,
@@ -49,8 +53,24 @@ export default function SpeedDialTooltipOpen({ page }) {
     dispatch(gainsListUpdated(false));
   };
 
+  useEffect(() => {
+    let whereScreen = 0;
+    function listenToScroll() {
+      const button = document.querySelector("#button");
+      if (window.pageYOffset < whereScreen) {
+        console.log(button, "menor");
+        button.classList.add("show");
+      } else {
+        button.classList.remove("show");
+      }
+
+      whereScreen = window.pageYOffset;
+    }
+    window.addEventListener("scroll", listenToScroll);
+  }, [window.pageYOffset]);
+
   return (
-    <div className={classes.root}>
+    <div className={classes.root} id="button">
       <Button
         className={clsx(classes.speedDial, `${page}`)}
         onClick={handleAdd}

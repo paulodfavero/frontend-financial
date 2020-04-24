@@ -11,11 +11,11 @@ import {
   Switch
 } from "@material-ui/core";
 
+import { expensesList } from "../../lib/expenses/expenses-reducer";
 import {
   expensesGet,
   expensesUpdateStatus
 } from "../../lib/expenses/expenses-selector";
-import { expensesList } from "../../lib/expenses/expenses-reducer";
 import { gainsList } from "../../lib/gains/gains-reducer";
 import { gainsGet, gainsUpdateStatus } from "../../lib/gains/gains-selector";
 
