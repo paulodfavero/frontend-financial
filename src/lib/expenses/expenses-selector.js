@@ -45,23 +45,31 @@ export function expensesTotalValue(state) {
 export async function expensesGet() {
   try {
     const res = await api.get("/expenses");
-    console.log("GET LIST", res);
     const listOrdered = expensesListOrder(res.data.docs);
     let filteredPerMonth = [];
     for (let i = 1; i <= 12; i++) {
       filteredPerMonth.push(
-        listOrdered.filter(item => {
-          let mes = item.limitDate.split("-");
-          return (
-            mes[1] === i.toString().padStart(2, 0) &&
-            mes[0] === getCurrentYear()
-          );
-        })
+        listOrdered &&
+          listOrdered.filter(item => {
+            let mes = item.limitDate.split("-");
+            return (
+              mes[1] === i.toString().padStart(2, 0) &&
+              mes[0] === getCurrentYear()
+            );
+          })
       );
     }
     return filteredPerMonth;
   } catch (error) {
     console.log("ERRRO", error);
     return error;
+  }
+}
+
+export async function expensesUpdateStatus(id, status) {
+  try {
+    await api.put(`/expenses/${id}`, { status });
+  } catch (error) {
+    console.log("Error to update status", error);
   }
 }

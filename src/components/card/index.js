@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 import {
   makeStyles,
   ExpansionPanel,
@@ -9,6 +10,14 @@ import {
   Card,
   Switch
 } from "@material-ui/core";
+
+import {
+  expensesGet,
+  expensesUpdateStatus
+} from "../../lib/expenses/expenses-selector";
+import { expensesList } from "../../lib/expenses/expenses-reducer";
+import { gainsList } from "../../lib/gains/gains-reducer";
+import { gainsGet, gainsUpdateStatus } from "../../lib/gains/gains-selector";
 
 import { FormatNumber } from "../../utils/formaterNumber";
 
@@ -44,6 +53,7 @@ const useStyles = makeStyles(theme => ({
 
 export default function RecipeReviewCard({
   origin,
+  id,
   name,
   category,
   value,
@@ -55,13 +65,23 @@ export default function RecipeReviewCard({
   status
 }) {
   const classes = useStyles();
+  const dispatch = useDispatch();
 
   const [state, setState] = useState({
     checkedA: status
   });
 
-  const handleChange = event => {
+  const handleChange = async (event, origin) => {
     setState({ ...state, [event.target.name]: event.target.checked });
+    if (origin === "gains") {
+      await gainsUpdateStatus(event.target.value, event.target.checked);
+      const res = await gainsGet();
+      dispatch(gainsList(res));
+    } else {
+      await expensesUpdateStatus(event.target.value, event.target.checked);
+      const res = await expensesGet();
+      dispatch(expensesList(res));
+    }
   };
   let date = "";
   if (limitDate) {
@@ -124,10 +144,11 @@ export default function RecipeReviewCard({
 
               <Switch
                 checked={state.checkedA}
-                onChange={handleChange}
+                onChange={event => handleChange(event, origin)}
                 name="checkedA"
-                inputProps={{ "aria-label": "secondary checkbox" }}
+                inputProps="aria-label"
                 color="primary"
+                value={id}
               />
             </CardContent>
           </Card>

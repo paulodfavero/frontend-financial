@@ -64,3 +64,11 @@ export async function gainsGet() {
     return error;
   }
 }
+
+export async function gainsUpdateStatus(id, status) {
+  try {
+    await api.put(`/gains/${id}`, { status });
+  } catch (error) {
+    console.log("Error to update status GAINS", error);
+  }
+}

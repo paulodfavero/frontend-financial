@@ -49,7 +49,7 @@ export default function Gains() {
           title="Valor total a receber"
           value={gainsTotal}
         />
-        {gainsGet && <Guide listCard={gainsGet} />}
+        {gainsGet && <Guide listCard={gainsGet} origin="gains" />}
 
         {!gainsGet && <SkeletonCard />}
       </div>

@@ -186,6 +186,7 @@ export default function SideComponent({ page }) {
           variant="outlined"
           size="small"
           value={state.name}
+          required
         />
         <TextField
           onChange={handleChange}
@@ -194,6 +195,7 @@ export default function SideComponent({ page }) {
           variant="outlined"
           size="small"
           value={state.category}
+          required
         />
         <TextField
           onChange={handleChange}
@@ -203,6 +205,7 @@ export default function SideComponent({ page }) {
           type="number"
           size="small"
           value={state.value}
+          required
         />
         <TextField
           onChange={handleChange}
@@ -229,6 +232,7 @@ export default function SideComponent({ page }) {
           variant="outlined"
           size="small"
           type="date"
+          required
           InputLabelProps={{ shrink: true }}
           value={state.limitDate}
         />
@@ -246,6 +250,7 @@ export default function SideComponent({ page }) {
               name: "expensesType",
               id: "outlined-age-native-simple"
             }}
+            required
           >
             <option aria-label="None" value="" />
             <option value="Fixa">Fixa</option>

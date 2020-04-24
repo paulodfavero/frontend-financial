@@ -60,7 +60,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default function ScrollableTabsButtonAuto({ listCard }) {
+export default function ScrollableTabsButtonAuto({ listCard, origin }) {
   const classes = useStyles();
   const dispatch = useDispatch();
   const [value, setValue] = useState(0);
@@ -115,7 +115,8 @@ export default function ScrollableTabsButtonAuto({ listCard }) {
             {item.map(item => (
               <CardComponent
                 key={item.name}
-                origin="gain"
+                id={item._id}
+                origin={origin}
                 name={item.name}
                 category={item.category}
                 value={item.value}

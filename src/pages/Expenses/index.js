@@ -49,7 +49,7 @@ export default function Expenses() {
           title="Seu gasto, jovem"
           value={expensesTotal}
         />
-        <Guide listCard={expensesGet} />
+        <Guide listCard={expensesGet} origin="expenses" />
         {!expensesGet && <SkeletonCard />}
       </div>
       <FastMenu page="expenses" />
