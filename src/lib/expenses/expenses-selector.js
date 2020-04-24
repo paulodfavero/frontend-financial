@@ -45,6 +45,7 @@ export function expensesTotalValue(state) {
 export async function expensesGet() {
   try {
     const res = await api.get("/expenses");
+    console.log("GET LIST", res);
     const listOrdered = expensesListOrder(res.data.docs);
     let filteredPerMonth = [];
     for (let i = 1; i <= 12; i++) {
