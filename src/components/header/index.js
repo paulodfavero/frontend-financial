@@ -11,10 +11,19 @@ import {
 } from "@material-ui/core";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 
-import { expensesListOrderType } from "../../lib/expenses/expenses-selector";
-import { expensesList } from "../../lib/expenses/expenses-reducer";
-import { gainsListOrderType } from "../../lib/gains/gains-selector";
-import { gainsList } from "../../lib/gains/gains-reducer";
+import {
+  expensesTotalValue,
+  expensesListOrderType
+} from "../../lib/expenses/expenses-selector";
+import {
+  expensesTotal,
+  expensesList
+} from "../../lib/expenses/expenses-reducer";
+import {
+  gainsTotalValue,
+  gainsListOrderType
+} from "../../lib/gains/gains-selector";
+import { gainsTotal, gainsList } from "../../lib/gains/gains-reducer";
 
 import { FormatNumber } from "../../utils/formaterNumber";
 
@@ -59,9 +68,11 @@ export default function Header({ title, value, origin }) {
     if (origin === "gains") {
       const listOrdered = await gainsListOrderType(type);
       dispatch(gainsList(listOrdered));
+      dispatch(gainsTotal(gainsTotalValue(listOrdered)));
     } else {
       const listOrdered = await expensesListOrderType(type);
       dispatch(expensesList(listOrdered));
+      dispatch(expensesTotal(expensesTotalValue(listOrdered)));
     }
   };
 
@@ -96,6 +107,7 @@ export default function Header({ title, value, origin }) {
           <MenuItem onClick={() => handleClose("Variável")}>
             Despesa Variável
           </MenuItem>
+          <MenuItem onClick={() => handleClose()}>Todas</MenuItem>
         </Menu>
       </div>
     </div>
