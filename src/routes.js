@@ -31,7 +31,7 @@ export default function Routes() {
       dispatch(expensesList(res));
       dispatch(expensesTotal(expensesTotalValue(res)));
     } catch (error) {
-      console.log("ERROR TO GET EXPENSES LIST", error);
+      console.log("ERROR TO GET EXPENSES LIST ss", error);
     }
   };
 
