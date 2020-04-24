@@ -14,7 +14,7 @@ const useStyles = makeStyles(theme => ({
   root: {
     position: "fixed",
     bottom: -20,
-    right: theme.spacing(9),
+    right: "calc(50% + 25px)",
     height: 350,
     transform: "translateZ(0px)",
     flexGrow: 1,
@@ -23,7 +23,7 @@ const useStyles = makeStyles(theme => ({
     zIndex: 1,
     transition: "all .3s ease-out",
     "&.show": {
-      bottom: theme.spacing(10)
+      bottom: theme.spacing(8)
     }
   },
   speedDial: {
