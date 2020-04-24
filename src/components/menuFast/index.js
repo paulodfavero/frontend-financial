@@ -70,7 +70,7 @@ export default function SpeedDialTooltipOpen({ page }) {
   }, [window.pageYOffset]);
 
   return (
-    <div className={classes.root} id="button">
+    <div className={clsx(classes.root, "show")} id="button">
       <Button
         className={clsx(classes.speedDial, `${page}`)}
         onClick={handleAdd}
