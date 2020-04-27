@@ -130,8 +130,6 @@ export default function SideComponent({ page }) {
         [name]: event.target.value
       });
     }
-
-    console.log(state);
   };
   const handleBack = () => {
     dispatch(handleOpenMenu(false));

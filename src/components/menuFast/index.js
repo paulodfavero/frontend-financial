@@ -58,7 +58,6 @@ export default function SpeedDialTooltipOpen({ page }) {
     function listenToScroll() {
       const button = document.querySelector("#button");
       if (window.pageYOffset < whereScreen) {
-        console.log(button, "menor");
         button.classList.add("show");
       } else {
         button.classList.remove("show");
