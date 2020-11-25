@@ -106,17 +106,6 @@ export default function ScrollableTabsButtonAuto({ listCard, origin }) {
           <Tab label="Out" {...a11yProps(9)} />
           <Tab label="Nov" {...a11yProps(10)} />
           <Tab label="Dez" {...a11yProps(11)} />
-          <Tab label="Jan" {...a11yProps(12)} />
-          <Tab label="Fev" {...a11yProps(13)} />
-          <Tab label="Mar" {...a11yProps(12)} />
-          <Tab label="Abr" {...a11yProps(13)} />
-          <Tab label="Mai" {...a11yProps(14)} />
-          <Tab label="Jun" {...a11yProps(15)} />
-          <Tab label="Jul" {...a11yProps(16)} />
-          <Tab label="Ago" {...a11yProps(17)} />
-          <Tab label="Set" {...a11yProps(18)} />
-          <Tab label="Out" {...a11yProps(19)} />
-          <Tab label="Nov" {...a11yProps(20)} />
         </Tabs>
       </AppBar>
 
