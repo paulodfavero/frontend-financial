@@ -9,7 +9,7 @@ const getCurrentYear = () => {
 
 function filteredPerMonth(list) {
   let filteredPerMonth = [];
-  for (let i = 1; i <= 24; i++) {
+  for (let i = 1; i <= 12; i++) {
     filteredPerMonth.push(
       list &&
         list.filter(item => {
